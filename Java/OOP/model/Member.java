@@ -1,12 +1,8 @@
-package model;
+package model.members;
 
 import java.io.Serializable;
 
-public class Member implements Serializable {
-    protected String firstName;
-    protected int birthYear;
-    protected String otherInformation;
-
+public class Member extends abstractMember {
     @Override
     public String toString() {
         return "Member = {\n" +
@@ -17,26 +13,26 @@ public class Member implements Serializable {
     }
 
     public String getFirstName() {
-        return firstName;
+        return super.firstName;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        super.firstName = firstName;
     }
 
     public int getBirthYear() {
-        return birthYear;
+        return super.birthYear;
     }
 
     public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
+        super.birthYear = birthYear;
     }
 
     public String getOtherInformation() {
-        return otherInformation;
+        return super.otherInformation;
     }
 
     public void setOtherInformation(String otherInformation) {
-        this.otherInformation = otherInformation;
+        super.otherInformation = otherInformation;
     }
 }

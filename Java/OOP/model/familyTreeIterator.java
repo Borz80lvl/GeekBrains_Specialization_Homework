@@ -1,25 +1,30 @@
-package model;
+package model.iterator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-public class familyTreeIterator<T> implements Iterator<T> {
-    private int count;
-    private List<T> unknowns;
+public class familyTreeIterator<T>
+        extends abstractFamilyTreeIterator<T>
+        implements Iterator<T>, Iterable<T> {
 
-    public familyTreeIterator(List<T> objects) {
-        this.count = 0;
-        this.unknowns = objects;
+    public familyTreeIterator(ArrayList<T> objects) {
+        super.count = 0;
+        super.members = objects;
     }
 
     @Override
     public boolean hasNext() {
-        return count < unknowns.size();
+        return count < super.members.size();
     }
 
     @Override
     public T next() {
         if (!hasNext()) return null;
-        return unknowns.get(count++);
+        return super.members.get(count++);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new familyTreeIterator<T>(super.members);
     }
 }
