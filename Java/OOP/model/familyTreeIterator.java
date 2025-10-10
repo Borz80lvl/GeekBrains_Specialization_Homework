@@ -1,4 +1,4 @@
-package model.iterator;
+package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ public class familyTreeIterator<T>
 
     public familyTreeIterator(ArrayList<T> objects) {
         super.count = 0;
-        super.members = objects;
+        super.members = new ArrayList<>(objects);
     }
 
     @Override
