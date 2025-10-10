@@ -1,9 +1,9 @@
-package model.family_tree;
+package model;
 
 import java.util.ArrayList;
 
 
-public abstract class familyTree<T> {
+public abstract class familyTree<T extends abstractMember> {
 
     protected ArrayList<T> members;
 
