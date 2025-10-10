@@ -1,7 +1,7 @@
-package model.members;
+package model;
 
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 

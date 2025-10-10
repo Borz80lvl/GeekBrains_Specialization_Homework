@@ -1,6 +1,4 @@
-package model.members;
-
-import java.io.Serializable;
+package model;
 
 public class Member extends abstractMember {
     @Override
