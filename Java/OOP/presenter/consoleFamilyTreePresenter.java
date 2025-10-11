@@ -1,32 +1,36 @@
 package presenter;
 
-import view.*;
-import model.*;
+import model.Member;
+import model.abstractMember;
+import model.consoleFamilyTree;
+import model.consoleFileOperations;
+import view.consoleFamilyTreeView;
 
 import java.util.Scanner;
 
 
-public class consoleFamilyTreePresenter<T extends Member> {
+public class consoleFamilyTreePresenter<T extends abstractMember> implements familyTreePresenter<T> {
 
-    familyTree<T> familyTree = new familyTree<>();
+    consoleFamilyTree<T> familyTree = new consoleFamilyTree<>();
+    consoleFileOperations fileOperations = new consoleFileOperations();
 
     public void showTree() {
         System.out.println(this.familyTree.toString());
     }
 
-    public void showTreeFromFile() {
-        System.out.println(this.familyTree.getFromFile().toString());
-    }
-
-
+    @Override
     public void showMember(T member) {
         System.out.println(this.familyTree.getMember(member));
     }
 
-
-    public void showMemberFromFile(T member) {
-        showMember(this.familyTree.getFromFile().getMember(member));
+    public void showMemberFromFile(String treeFilePath, T member) {
+        showMember(((consoleFamilyTree<T>) fileOperations.getObjectFromFile(treeFilePath)).getMember(member));
     }
+
+    public void showTreeFromFile(String treeFilePath) {
+        System.out.println(fileOperations.getObjectFromFile(treeFilePath).toString());
+    }
+
 
     public void addMember(T member) {
         this.familyTree.addMember(member);
@@ -35,7 +39,9 @@ public class consoleFamilyTreePresenter<T extends Member> {
     public int start() {
         Scanner userInput;
         consoleFamilyTreeView view = new consoleFamilyTreeView();
+        String filePath = "";
         int userNumber;
+        int fileCount = 0;
         while (true) {
             view.showMainMenu();
             userInput = new Scanner(System.in);
@@ -48,10 +54,22 @@ public class consoleFamilyTreePresenter<T extends Member> {
                         showTree();
                         break;
                     case 2:
-                        showTreeFromFile();
+                        System.out.println("Введите путь к файлу семейного дерева: ");
+                        if (userInput.hasNext()) {
+                            filePath = userInput.next();
+                            showTreeFromFile(filePath);
+                        }
+                        fileCount += 1;
                         break;
                     case 3:
-                        this.familyTree.saveToFile();
+                        if (fileCount == 1) {
+                            fileOperations.saveObjectToFile(familyTree, filePath);
+                        } else {
+                            System.out.println("Введите путь к файлу семейного дерева: ");
+                            if (userInput.hasNext()) {
+                                fileOperations.saveObjectToFile(familyTree, userInput.next());
+                            }
+                        }
                         System.out.println("Семейное древо сохранено.");
                         break;
                     case 4:
@@ -76,7 +94,7 @@ public class consoleFamilyTreePresenter<T extends Member> {
                             otherInformation = userInput.next();
                             member.setOtherInformation(otherInformation);
                         }
-                        this.familyTree.addMember((T) member);
+                        addMember((T) member);
                         System.out.println("Член семейного древа добавлен.");
                         break;
                 }
