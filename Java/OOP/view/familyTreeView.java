@@ -1,6 +1,6 @@
 package view;
 
-public interface familyTreeView extends View {
+public interface familyTreeView {
     void showMainMenu();
-
+    void print(Object object);
 }
