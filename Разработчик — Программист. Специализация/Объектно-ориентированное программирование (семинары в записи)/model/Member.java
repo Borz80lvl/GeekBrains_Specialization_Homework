@@ -3,11 +3,9 @@ package model;
 public class Member extends abstractMember {
     @Override
     public String toString() {
-        return "Member = {\n" +
-                "firstName: " + firstName + "\n," +
-                "birthYear: " + birthYear + "\n," +
-                "otherInformation: " + otherInformation + "\n" +
-                '}';
+        return "\n" + firstName +
+                "= {\nbirthYear: " + birthYear +
+                "\notherInformation: " + otherInformation + "\n}";
     }
 
     public String getFirstName() {

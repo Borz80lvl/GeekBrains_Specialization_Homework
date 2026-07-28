@@ -9,8 +9,10 @@ public class consoleFileOperations extends fileOperations {
     public void saveObjectToFile(Object object, String path) {
         try (FileOutputStream fileOutput = new FileOutputStream(path);
              ObjectOutputStream outputStream = new ObjectOutputStream(fileOutput)) {
-            outputStream.writeObject(object);
-            outputStream.flush();
+            if (new File(path).exists()) {
+                outputStream.writeObject(object);
+                outputStream.flush();
+            }
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Файл не был найден");
             System.err.println(fileNotFoundException.getMessage());
@@ -25,19 +27,19 @@ public class consoleFileOperations extends fileOperations {
     public Object getObjectFromFile(String path) {
         try (FileInputStream fileInputStream = new FileInputStream(path);
              ObjectInputStream inputStream = new ObjectInputStream(fileInputStream)) {
-            return inputStream.readObject();
+            if (new File(path).exists()) return inputStream.readObject();
+            else {
+                return "Файл не обнаружен";
+            }
         } catch (FileNotFoundException fileNotFoundException) {
-            System.out.println("Файл не был найден");
             System.err.println(fileNotFoundException.getMessage());
-            return null;
+            return "Файл не был найден";
         } catch (IOException ioException) {
-            System.out.println("Ошибка InputOutput");
             System.err.println(ioException.getMessage());
-            return null;
+            return "Ошибка InputOutput";
         } catch (ClassNotFoundException classNotFoundException) {
-            System.out.println("Класс не был найден");
             System.err.println(classNotFoundException.getMessage());
-            return null;
+            return "Класс не был найден";
         }
     }
 

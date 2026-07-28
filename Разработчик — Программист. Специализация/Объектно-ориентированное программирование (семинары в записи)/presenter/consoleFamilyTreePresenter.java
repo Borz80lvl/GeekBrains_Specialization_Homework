@@ -36,30 +36,38 @@ public class consoleFamilyTreePresenter<T extends abstractMember> implements fam
         this.familyTree.addMember(member);
     }
 
-    public int start() {
+    public void start() {
         Scanner userInput;
         consoleFamilyTreeView view = new consoleFamilyTreeView();
         String filePath = "";
         int userNumber;
         int fileCount = 0;
-        while (true) {
+        boolean isUserClosingProgram = false;
+        while (!isUserClosingProgram) {
             view.showMainMenu();
             userInput = new Scanner(System.in);
             if (userInput.hasNextInt()) {
                 userNumber = userInput.nextInt();
                 switch (userNumber) {
                     case 0:
-                        return 0;
+                        isUserClosingProgram = true;
                     case 1:
                         showTree();
                         break;
                     case 2:
                         System.out.println("Введите путь к файлу семейного дерева: ");
                         if (userInput.hasNext()) {
-                            filePath = userInput.next();
-                            showTreeFromFile(filePath);
+                            String tempFilePath = userInput.next();
+                            if (fileCount == 0) {
+                                filePath = tempFilePath;
+                                fileCount += 1;
+                            }
+                            else if (fileCount == 1 && filePath.equals(tempFilePath)) {
+                                showTreeFromFile(filePath);
+                                break;
+                            } else fileCount += 1;
+                            showTreeFromFile(tempFilePath);
                         }
-                        fileCount += 1;
                         break;
                     case 3:
                         if (fileCount == 1) {
@@ -73,6 +81,13 @@ public class consoleFamilyTreePresenter<T extends abstractMember> implements fam
                         System.out.println("Семейное древо сохранено.");
                         break;
                     case 4:
+                        System.out.println("Введите путь к файлу семейного дерева: ");
+                        if (userInput.hasNext()) {
+                            filePath = userInput.next();
+                            fileOperations.deleteFile(filePath);
+                        }
+                        break;
+                    case 5:
                         String firstName;
                         int birthYear;
                         String otherInformation;
@@ -83,6 +98,7 @@ public class consoleFamilyTreePresenter<T extends abstractMember> implements fam
                             member.setFirstName(firstName);
                         }
                         userInput.reset();
+
                         System.out.println("Введите год рождения: ");
                         if (userInput.hasNextInt()) {
                             birthYear = userInput.nextInt();

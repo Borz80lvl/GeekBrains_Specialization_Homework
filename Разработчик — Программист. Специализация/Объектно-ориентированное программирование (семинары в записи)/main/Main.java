@@ -1,7 +1,6 @@
 package main;
 
-import model.familyTree;
-import model.Person;
+import model.*;
 import presenter.*;
 
 import java.util.Iterator;
@@ -11,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         //Task 1
         System.out.println("\n====== Task 1 ======");
-        familyTree<Person> familyTree = new familyTree<>();
+        consoleFamilyTree<Person> familyTree = new consoleFamilyTree<>();
         Person john = new Person("John", 1996);
         Person emma = new Person("Emma", 2000);
         Person isabella = new Person("Isabella", 2010);
@@ -26,21 +25,26 @@ public class Main {
 
         //Task 2
         System.out.println("\n====== Task 2 ======\n");
-        isabella.saveToFile();
-        isabella.getFromFile();
-        familyTree.saveToFile();
-        familyTree.getFromFile();
+        consoleFileOperations fileOperations = new consoleFileOperations();
+        fileOperations.saveObjectToFile(isabella, isabella.getFirstName());
+        System.out.println(fileOperations.getObjectFromFile(isabella.getFirstName()));
+        fileOperations.deleteFile(isabella.getFirstName());
+        String familyTreeFileName = "familyTree";
+        fileOperations.saveObjectToFile(familyTree, familyTreeFileName);
+        System.out.println(fileOperations.getObjectFromFile(familyTreeFileName));
+        fileOperations.deleteFile(familyTreeFileName);
 
         //Task 3
         System.out.println("\n====== Task 3 ======");
-        Iterator<Person> familyIterator = familyTree.iterator();
-        while (familyIterator.hasNext()) System.out.println(familyIterator.next());
+        Iterator<Person> familyTreeIterator = new familyTreeIterator<>(familyTree.getMembers()).iterator();
+        consoleFamilyTreeSorter<Person> familyTreeSorter = new consoleFamilyTreeSorter<>();
+        while (familyTreeIterator.hasNext()) System.out.println(familyTreeIterator.next());
         System.out.println("\nСортировка по имени:");
         System.out.printf("До: %s\n", familyTree);
-        System.out.printf("После: %s\n\n", familyTree.sortByName());
+        System.out.printf("После: %s\n\n", familyTreeSorter.sortByName(familyTree.getMembers()));
         System.out.println("Сортировка по году рождения:");
         System.out.printf("До: %s\n", familyTree);
-        System.out.printf("После: %s\n", familyTree.sortByBirthYear());
+        System.out.printf("После: %s\n", familyTreeSorter.sortByBirthYear(familyTree.getMembers()));
 
         //Task 4
         System.out.println("\n====== Task 4 ======");

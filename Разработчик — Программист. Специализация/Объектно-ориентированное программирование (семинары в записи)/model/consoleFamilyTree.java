@@ -8,7 +8,7 @@ public class consoleFamilyTree<T extends abstractMember> extends familyTree<T> i
 
     /// Adds member to members list
     public void addMember(T member) {
-        this.members.add(member);
+        super.members.add(member);
     }
 
     /// Returns member if member exists in members list, null if it doesn't
@@ -31,6 +31,9 @@ public class consoleFamilyTree<T extends abstractMember> extends familyTree<T> i
         for (T member : super.members) {
             stringBuilder.append(member.toString()).append(", ");
         }
-        return stringBuilder.deleteCharAt(stringBuilder.length() - 2).append(" }").toString();
+        if (stringBuilder.toString().contains(",")) {
+            return stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(",")).append(" }").toString();
+        }
+        else return stringBuilder.append(" }").toString();
     }
 }
